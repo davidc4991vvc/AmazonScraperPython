@@ -1,5 +1,5 @@
-import sqlite 3 #interfaces with sql DB to store data for trends
+import pymongo #interfaces with mongo DB to store pricing data
 
-class Item
+class Item:
 	name = ""
-	price
+	price = 0.00
