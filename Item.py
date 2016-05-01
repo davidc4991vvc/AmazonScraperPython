@@ -1,10 +1,9 @@
-import pymongo #interfaces with mongo DB to store pricing data
-
 class Item:
 	name = ""
 	price = 0.00
 	product_code = ""
 	amazon_base_url = "http://www.amazon.com/gp/product/"
+	average_price = 0.00
 
 	def __init__(self, name, price, product_code):
 		self.name = name
@@ -19,6 +18,9 @@ class Item:
 
 	def getProductCode(self):
 		print Item.product_code
+	
+	def getAveragePrice(self):
+		print Item.average_price
 
 	def setName(self, new_name):
 		self.name = new_name
@@ -28,3 +30,6 @@ class Item:
 
 	def setProductCode(self, new_product_code):
 		self.product_code = new_product_code
+
+	def setAveragePrice(self, new_average_price):
+		self.average_price = new_average_price
