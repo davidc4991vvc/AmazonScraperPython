@@ -1,20 +1,20 @@
 class Item:
 	name = ""
-	price = 0.00
+	date_price_pair = ""
 	product_code = ""
 	amazon_base_url = "http://www.amazon.com/gp/product/"
 	average_price = 0.00
 
-	def __init__(self, name, price, product_code):
+	def __init__(self, name, date_price_pair, product_code):
 		self.name = name
-		self.price = price
+		self.date_price_pair = date_price_pair
 		self.product_code = product_code
 
 	def getName(self):
 		print Item.name
 
-	def getPrice(self):
-		print Item.price
+	def getDatePricePair(self):
+		print Item.date_price_pair
 
 	def getProductCode(self):
 		print Item.product_code
@@ -25,8 +25,8 @@ class Item:
 	def setName(self, new_name):
 		self.name = new_name
 	
-	def setPrice(self, new_price):
-		self.price = new_price
+	def setDatePricePair(self, new_date_price_pair):
+		self.date_price_pair = new_date_price_pair
 
 	def setProductCode(self, new_product_code):
 		self.product_code = new_product_code
