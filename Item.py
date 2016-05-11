@@ -11,16 +11,16 @@ class Item:
 		self.product_code = product_code
 
 	def getName(self):
-		print Item.name
+		return self.name
 
 	def getDatePricePair(self):
-		print Item.date_price_pair
+		return self.date_price_pair
 
 	def getProductCode(self):
-		print Item.product_code
+		return self.product_code
 	
 	def getAveragePrice(self):
-		print Item.average_price
+		return self.average_price
 
 	def setName(self, new_name):
 		self.name = new_name

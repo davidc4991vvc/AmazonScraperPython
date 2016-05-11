@@ -25,10 +25,20 @@ class MongoDBHelper:
 	#Adds an item to DB
 	def addItem(self, item, database):
 
-		newEntry = dict(name=item.getName(), product_code=item.getProductCode(), price_history=item.getDatePricePair(), average_price=item.getAveragePrice())
+		print "in addItem: heres the item \n"
+		print item.name
+		print item.getName()
+		
+		newEntry = dict(item_name=item.getName(), product_code=item.getProductCode(), price_history=item.getDatePricePair(), average_price=item.getAveragePrice())
 
-		database.items.insert_one(newEntry)
-		print newEntry + " inserted to database.\n"
+		cursor = database.items.find({"product_code": item.getProductCode()})
+
+		if cursor.count() > 0:
+			print "Item already defined! Enter a distinct product code or delete existing entry.\n"
+		else:
+
+			database.items.insert(newEntry)
+			print item.getName() + " inserted to database.\n"
 
 	@classmethod
 	#Adds new price contained in Item to its collected prices in DB, and also calls method to update item's average price. Updates DB with these changes.
@@ -37,15 +47,15 @@ class MongoDBHelper:
 		cursor = database.items.find({"product_code": item.getProductCode()})
 
 		for document in cursor:
-			oldPriceHistory = document.pop(price_history)
-			oldPriceHistory[date.today()] = item.getDatePricePair().values().pop()
-
-			document[price_history] = oldPriceHistory
+			oldPriceHistory = document.pop('price_history')
+			yyyymmdd = date.today().strftime("%Y%m%d")
+			oldPriceHistory[yyyymmdd] = item.getDatePricePair().values().pop()
 
 			prices = oldPriceHistory.values()
-			new_average_price = recalculateAveragePrice(prices)
 
-			database.items.update_one({"name": item.getName()},
+			new_average_price = MongoDBHelper.recalculateAveragePrice(prices)
+
+			database.items.update_one({"item_name": item.getName()},
  {
         "$set": {
             "price_history": oldPriceHistory,
@@ -54,13 +64,25 @@ class MongoDBHelper:
  }
 )
 
+		item.setAveragePrice(new_average_price)
+
 		print item.getName() + " updated.\n"
 
 	#Helper method to recalculate average price of an item
-	def recalculateAveragePrice(prices):
-		new_average_price = sum(prices) / float(len(prices))
-		item.setAveragePrice(new_average_price)
+	@classmethod
+	def recalculateAveragePrice(self, prices):
 
+		#prices are in strings so should be converted
+		prices_copy = list(prices)
+
+		prices_copy = [s.strip('$') for s in prices_copy]
+
+		print prices_copy
+		numberlist = map(float, prices_copy)
+		print sum(numberlist)
+		new_average_price = (sum(numberlist)) / float(len(prices))
+
+		print new_average_price
 		return new_average_price
 
 	@classmethod
@@ -72,5 +94,5 @@ class MongoDBHelper:
 		if result.deleted_count == 0:
 			print "Item not found in database. Please try again.\n"
 		else:
-			print result + " removed from database."
+			print "Product with code " + product_code + " removed from database."
 		
