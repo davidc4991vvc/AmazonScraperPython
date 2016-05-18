@@ -10,6 +10,13 @@ class Item:
 		self.date_price_pair = date_price_pair
 		self.product_code = product_code
 
+	def dispose(self):
+		self.name = None
+		self.date_price_pair = None
+		self.product_code = None
+		self.amazon_base_url = None
+		self.average_price = None
+
 	def getName(self):
 		return self.name
 

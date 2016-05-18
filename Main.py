@@ -16,8 +16,12 @@ if cursor.count() > 0:
 		print "Updating price data for the day... please wait...\n"
 		temp_product_code = document['product_code']
 		updateScrape = Scraper.amazonScrape(url, temp_product_code)
-		tempItem = Item(updateScrape['name'], updateScrape['price_history'], temp_product_code)
-		MongoDBHelper.updatePriceHistory(tempItem, database)
+		
+		#If scraping successful, update data for current item, else continue
+		if updateScrape != -1:
+
+			tempItem = Item(updateScrape['name'], updateScrape['price_history'], temp_product_code)
+			MongoDBHelper.updatePriceHistory(tempItem, database)
 
 		time.sleep(60)
 
@@ -47,9 +51,7 @@ while choice != 4:
 	
 		newScrape = Scraper.amazonScrape(url, prod_code)
 
-		if len(newScrape) > 0:
-
-			print newScrape
+		if newScrape != -1:
 
 			newItem = Item(newScrape['name'], newScrape['price_history'], prod_code)
 			MongoDBHelper.addItem(newItem, database)
