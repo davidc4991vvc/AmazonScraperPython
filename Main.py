@@ -7,7 +7,8 @@ print "Amazon Scraper: Where all your frugal dreams come true.\n"
 
 url = "http://www.amazon.com/gp/product/"
 
-database = MongoDBHelper.setupDB()
+db = MongoDBHelper.setupDB()
+database = db.ItemCollection
 
 cursor = database.items.find()
 
@@ -72,4 +73,5 @@ while choice != 4:
 		MongoDBHelper.deleteItem(prod_code, database)
 	else:
 		print "Exiting now..."
+		db.close()
 

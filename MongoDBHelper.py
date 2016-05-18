@@ -8,7 +8,7 @@ class MongoDBHelper:
 	#Setup DB client and returns relevant database for our work
 	def setupDB(self):
 		client = MongoClient()
-		return client.ItemCollection
+		return client
 
 	@classmethod
 	#Prints all items in DB, or a message if there are none
